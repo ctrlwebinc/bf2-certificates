@@ -119,7 +119,7 @@ class PDF_Field {
 				'name'     => $field_type_object->_name( '[font]' ),
 				'id'       => $field_type_object->_id( '_font' ),
 				'default'  => 'Arial',
-				'options'  => Text::html_options_from_array( $fonts_available ),
+				'options'  => Text::html_options_from_array( $fonts_available, $field_escaped_value['font'] ),
 				'required' => 'required',
 				'style'    => 'margin-top: 0',
 			)
@@ -133,7 +133,7 @@ class PDF_Field {
 				'name'    => $field_type_object->_name( '[style]' ),
 				'id'      => $field_type_object->_id( '_style' ),
 				'default' => '',
-				'options' => Text::html_options_from_array( $styles_available ),
+				'options' => Text::html_options_from_array( $styles_available, $field_escaped_value['style'] ),
 				'style'   => 'margin-top: 0',
 			)
 		);
@@ -189,7 +189,7 @@ class PDF_Field {
 				'name'    => $field_type_object->_name( '[align]' ),
 				'id'      => $field_type_object->_id( '_align' ),
 				'default' => '',
-				'options' => Text::html_options_from_array( $alignments_available ),
+				'options' => Text::html_options_from_array( $alignments_available, $field_escaped_value['align'] ),
 				'style'   => 'margin-top: 0',
 			)
 		);
