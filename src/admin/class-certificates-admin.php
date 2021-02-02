@@ -20,13 +20,20 @@
  * @package Badge_Factor_2_Certificates
  *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.VariableConstantNameFound
+ * @phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
  * @phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
  */
 
 namespace BadgeFactor2;
 
-use setasign\Fpdi\Tcpdf\Fpdi;
+use BadgeFactor2\Models\Assertion;
+use BadgeFactor2\Models\BadgeClass;
+use BadgeFactor2\Post_Types\BadgePage;
+use CMB2_Field;
 
+/**
+ * Certificates Admin class.
+ */
 class Certificates_Admin {
 
 	/**
@@ -37,6 +44,8 @@ class Certificates_Admin {
 	public static function init_hooks() {
 		add_action( 'cmb2_admin_init', array( self::class, 'register_settings_metaboxes' ), 10 );
 		add_action( 'admin_init', array( self::class, 'manage_pdf_preview' ), 10 );
+		add_action( 'cmb2_save_field_bf2_certificate_slug', array( self::class, 'save_certificate_slug' ), 99, 3 );
+		add_action( 'init', array( self::class, 'flush_certificate_slug'), 10 );
 	}
 
 	/**
@@ -90,6 +99,16 @@ class Certificates_Admin {
 
 		$plugins->add_field(
 			array(
+				'name'    => __( 'Certificate slug', BF2_DATA['TextDomain'] ),
+				'desc'    => __( 'When you modify this, you need to flush your rewrite rules.', BF2_DATA['TextDomain'] ),
+				'id'      => 'bf2_certificate_slug',
+				'type'    => 'text',
+				'default' => 'certificate',
+			)
+		);
+
+		$plugins->add_field(
+			array(
 				'name'         => __( 'Certificate Template', $plugin_data['TextDomain'] ),
 				'type'         => 'file',
 				'id'           => 'bf2_certificate_template',
@@ -103,14 +122,6 @@ class Certificates_Admin {
 					'type' => 'application/pdf',
 				),
 				'preview_size' => 'small',
-			)
-		);
-
-		$plugins->add_field(
-			array(
-				'name' => __( 'Title', $plugin_data['TextDomain'] ),
-				'id'   => 'bf2_certificate_title',
-				'type' => 'text',
 			)
 		);
 
@@ -178,6 +189,36 @@ class Certificates_Admin {
 	}
 
 
+	/**
+	 * Hook called on certificate_slug field save.
+	 *
+	 * @param boolean $updated Updated.
+	 * @param string $action Action.
+	 * @param CMB2_Field $instance Field instance.
+	 * @return void
+	 */
+	public static function save_certificate_slug( bool $updated, string $action, CMB2_Field $instance ) {
+		set_transient( 'flush_certificate_slug', true );
+	}
+
+
+	/**
+	 * Hook called to verify if rewrite rules flush is required.
+	 *
+	 * @return void
+	 */
+	public static function flush_certificate_slug() {
+		if ( delete_transient( 'flush_certificate_slug' ) ) {
+			flush_rewrite_rules();
+		}
+	}
+
+
+	/**
+	 * Manage PDF preview in Certificates admin page.
+	 *
+	 * @return void
+	 */
 	public static function manage_pdf_preview() {
 		global $pagenow;
 		if ( 'admin.php' === $pagenow &&
@@ -189,37 +230,19 @@ class Certificates_Admin {
 		}
 	}
 
+
+	/**
+	 * Generates a preview.
+	 *
+	 * @return void
+	 */
 	private static function generate_preview() {
-		$settings = get_option( 'bf2_certificates_settings' );
+		$entity_id = $_GET['assertion_id'];
+		$assertion = Assertion::get( $entity_id );
+		$badge     = BadgeClass::get( $assertion->badgeclass );
+		$badgepage = BadgePage::get_by_badgeclass_id( $badge->entityId );
+		$courses   = BadgePage::get_courses( $badgepage->ID );
 
-		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
-
-		$pdf = new Fpdi();
-		$pdf->AddPage( 'L', 'Letter' );
-		$pdf->setSourceFile( $template_file );
-
-		$tpl_id = $pdf->importPage( 1 );
-		$pdf->useTemplate( $tpl_id, 0, 0, null, null, true );
-
-		foreach ( $settings as $id => $field_settings ) {
-			if ( false === strpos( $id, 'bf2_certificate_template' ) ) {
-				$pdf->setFont( $field_settings['font'], $field_settings['style'] );
-				$pdf->setFontSize( $field_settings['size'] );
-				$pdf->SetXY( $field_settings['pos_x'], $field_settings['pos_y'] );
-				$pdf->Cell( 
-					$field_settings['width'], // Width.
-					0, // Height.
-					$field_settings['text'], // Text.
-					0, // Border.
-					0, // Position after.
-					$field_settings['align'], // Align.
-					false, // Fill.
-					null // Link.
-				);
-			}
-		}
-
-		$pdf->Output();
+		Certificates_Public::generate( $courses[0], $assertion );
 	}
-
 }
