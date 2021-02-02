@@ -72,6 +72,7 @@ class BF2_Certificates {
 	public static function init_hooks() {
 		//Certificates_Public::init_hooks();
 		Course_Certificate_Extension::init_hooks();
+		Certificates_Public::init_hooks();
 
 		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			Certificates_Admin::init_hooks();
