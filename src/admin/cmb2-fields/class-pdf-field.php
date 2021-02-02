@@ -1,7 +1,7 @@
 <?php
 /**
  * Badge Factor 2
- * Copyright (C) 2019 ctrlweb
+ * Copyright (C) 2021 ctrlweb
  *
  * This program is distributed WITHOUT ANY WARRANTY.
  *
