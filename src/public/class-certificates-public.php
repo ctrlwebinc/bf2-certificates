@@ -20,10 +20,12 @@
  * @package Badge_Factor_2_Certificates
  *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.VariableConstantNameFound
+ * @phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
  */
 
 namespace BadgeFactor2;
 
+use BadgeFactor2\Controllers\Certificate_Controller;
 use BadgeFactor2\Helpers\BuddyPress;
 use BadgeFactor2\Models\BadgeClass;
 use BadgeFactor2\Models\Issuer;
@@ -41,6 +43,10 @@ class Certificates_Public {
 
 		add_action( 'init', array( self::class, 'add_rewrite_tags' ), 10, 0 );
 		add_action( 'init', array( self::class, 'add_rewrite_rules' ), 10, 0 );
+
+		add_filter( 'template_include', array( Certificate_Controller::class, 'single' ) );
+
+		add_action( 'bf2_assertion_links', array( self::class, 'certificate_link' ) );
 	}
 
 
@@ -54,20 +60,23 @@ class Certificates_Public {
 	}
 
 
+	public static function get_certificate_slug() {
+		$options = get_option( 'bf2_certificates_settings' );
+		return ! empty( $options['bf2_certificate_slug'] ) ? $options['bf2_certificate_slug'] : 'certificate';
+	}
+
 	/**
 	 * Rewrite rules.
 	 *
 	 * @return void
 	 */
 	public static function add_rewrite_rules() {
-		$options = get_option( 'bf2_certificates_settings' );
-
 		if ( BuddyPress::is_active() ) {
 			// Members page managed by BuddyPress.
 			$members_page = BuddyPress::get_members_page_name();
 
 			// FIXME make certificate variable.
-			$certificate_slug = ! empty( $options['bf2_certificate_slug'] ) ? $options['bf2_certificate_slug'] : 'certificate';
+			$certificate_slug = self::get_certificate_slug();
 
 			add_rewrite_rule( "{$members_page}/([^/]+)/badges/([^/]+)/{$certificate_slug}/?$", 'index.php?member=$matches[1]&badge=$matches[2]&certificate=1', 'top' );
 		} else {
@@ -157,6 +166,15 @@ class Certificates_Public {
 		status_header( 200 );
 		$pdf->Output();
 		die;
+	}
+
+
+	public static function certificate_link() {
+		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
+
+		$certificate_slug = self::get_certificate_slug();
+
+		echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View certificate', $plugin_data['TextDomain'] ) );
 	}
 
 

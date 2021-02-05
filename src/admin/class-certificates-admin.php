@@ -45,7 +45,7 @@ class Certificates_Admin {
 		add_action( 'cmb2_admin_init', array( self::class, 'register_settings_metaboxes' ), 10 );
 		add_action( 'admin_init', array( self::class, 'manage_pdf_preview' ), 10 );
 		add_action( 'cmb2_save_field_bf2_certificate_slug', array( self::class, 'save_certificate_slug' ), 99, 3 );
-		add_action( 'init', array( self::class, 'flush_certificate_slug'), 10 );
+		add_action( 'init', array( self::class, 'flush_certificate_slug' ), 10 );
 	}
 
 	/**

@@ -96,6 +96,7 @@ class BF2_Certificates {
 	 */
 	public function includes() {
 		require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
+		require_once plugin_dir_path( __FILE__ ) . 'controllers/class-certificate-controller.php';
 		require_once plugin_dir_path( __FILE__ ) . 'public/class-certificates-public.php';
 		require_once plugin_dir_path( __FILE__ ) . 'post-types/class-course-certificate-extension.php';
 
