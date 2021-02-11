@@ -50,22 +50,26 @@ class Course_Certificate_Extension {
 		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
 		$cmb         = cmb2_get_metabox( 'course_info' );
 
-		$cmb->add_field(
-			array(
-				'id'           => 'certificate_template',
-				'name'         => __( 'Certificate Template', $plugin_data['TextDomain'] ),
-				'type'         => 'file',
-				'options'      => array(
-					'url' => false,
-				),
-				'text'         => array(
-					'add_upload_file_text' => __( 'Add Template', $plugin_data['TextDomain'] ),
-				),
-				'query_args'   => array(
-					'type' => 'application/pdf',
-				),
-				'preview_size' => 'small',
-			)
-		);
+		if ( $cmb ) {
+			$cmb->add_field(
+				array(
+					'id'           => 'certificate_template',
+					'name'         => __( 'Certificate Template', $plugin_data['TextDomain'] ),
+					'type'         => 'file',
+					'options'      => array(
+						'url' => false,
+					),
+					'text'         => array(
+						'add_upload_file_text' => __( 'Add Template', $plugin_data['TextDomain'] ),
+					),
+					'query_args'   => array(
+						'type' => 'application/pdf',
+					),
+					'preview_size' => 'small',
+				)
+			);
+		}
+
+		
 	}
 }
