@@ -62,6 +62,7 @@ class Certificates_Admin {
 			'parent_slug'  => 'badgefactor2',
 			'tab_group'    => 'badgefactor2',
 			'tab_title'    => __( 'Certificates', $plugin_data['TextDomain'] ),
+			'capability'   => 'manage_badgr',
 		);
 
 		// 'tab_group' property is supported in > 2.4.0.
