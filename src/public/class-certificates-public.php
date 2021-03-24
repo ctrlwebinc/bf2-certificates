@@ -95,86 +95,99 @@ class Certificates_Public {
 
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
-		$badge     = BadgeClass::get( $assertion->badgeclass );
-		$issuer    = Issuer::get( $badge->issuer );
-		$recipient = get_user_by( 'email', $assertion->recipient->plaintextIdentity );
+		if ( $template_file ) {
+			$badge     = BadgeClass::get( $assertion->badgeclass );
+			$issuer    = Issuer::get( $badge->issuer );
+			$recipient = get_user_by( 'email', $assertion->recipient->plaintextIdentity );
 
-		$pdf = new Fpdi();
-		$pdf->AddPage( 'L', 'Letter' );
-		$pdf->setSourceFile( $template_file );
+			$pdf = new Fpdi();
+			$pdf->AddPage( 'L', 'Letter' );
+			$pdf->setSourceFile( $template_file );
 
-		$tpl_id = $pdf->importPage( 1 );
-		$pdf->useTemplate( $tpl_id, 0, 0, null, null, true );
+			$tpl_id = $pdf->importPage( 1 );
+			$pdf->useTemplate( $tpl_id, 0, 0, null, null, true );
 
-		foreach ( $settings as $id => $field_settings ) {
+			foreach ( $settings as $id => $field_settings ) {
 
-			if ( false === strpos( $id, 'bf2_certificate_template' ) && is_array( $field_settings ) ) {
+				if ( false === strpos( $id, 'bf2_certificate_template' ) && is_array( $field_settings ) ) {
 
-				$field_settings['link'] = null;
+					$field_settings['link'] = null;
 
-				if ( strpos( $field_settings['text'], '$badge$' ) !== false ) {
-					// $badge$
-					$image = str_replace( '$badge$', $assertion->image, $field_settings['text'] );
-					self::generate_pdf_image( $pdf, $field_settings, $image );
-				} else {
-					$text = $field_settings['text'];
+					if ( strpos( $field_settings['text'], '$badge$' ) !== false ) {
+						// $badge$
+						$image = str_replace( '$badge$', $assertion->image, $field_settings['text'] );
+						self::generate_pdf_image( $pdf, $field_settings, $image );
+					} else {
+						$text = $field_settings['text'];
 
-					// $course$
-					if ( strpos( $text, '$course$' ) !== false ) {
-						$text = str_replace( '$course$', $course->post_title, $text );
-					}
-
-					// $date$
-					if ( strpos( $text, '$date$' ) !== false ) {
-						$text = str_replace( '$date$', date_i18n( 'Y-m-d' ), $text );
-					}
-
-					// $hours$
-					if ( strpos( $text, '$hours$' ) !== false ) {
-						$hours = get_post_meta( $course, 'course_duration', true );
-						if ( false === $hours ) {
-							$hours = 'N/A';
+						// $course$
+						if ( strpos( $text, '$course$' ) !== false ) {
+							$text = str_replace( '$course$', $course->post_title, $text );
 						}
-						if ( '1' === $hours ) {
-							$hours .= sprintf( ' %s', __( 'hour', $plugin_data['TextDomain'] ) );
-						} else {
-							$hours .= sprintf( ' %s', __( 'hours', $plugin_data['TextDomain'] ) );
+
+						// $date$
+						if ( strpos( $text, '$date$' ) !== false ) {
+							$text = str_replace( '$date$', date_i18n( 'Y-m-d' ), $text );
 						}
-						$text = str_replace( '$hours$', $hours, $text );
-					}
 
-					// $issuer$
-					if ( strpos( $text, '$issuer$' ) !== false ) {
-						$text = str_replace( '$issuer$', $issuer->name, $text );
-					}
+						// $hours$
+						if ( strpos( $text, '$hours$' ) !== false ) {
+							$hours = get_post_meta( $course, 'course_duration', true );
+							if ( false === $hours ) {
+								$hours = 'N/A';
+							}
+							if ( '1' === $hours ) {
+								$hours .= sprintf( ' %s', __( 'hour', $plugin_data['TextDomain'] ) );
+							} else {
+								$hours .= sprintf( ' %s', __( 'hours', $plugin_data['TextDomain'] ) );
+							}
+							$text = str_replace( '$hours$', $hours, $text );
+						}
 
-					// $name$
-					if ( strpos( $text, '$name$' ) !== false ) {
-						$text = str_replace( '$name$', $recipient->user_nicename, $text );
-					}
+						// $issuer$
+						if ( strpos( $text, '$issuer$' ) !== false ) {
+							$text = str_replace( '$issuer$', $issuer->name, $text );
+						}
 
-					// $portfolio$
-					if ( strpos( $text, '$portfolio$' ) !== false ) {
-						$text                   = str_replace( '$portfolio$', 'TODO', $text );
-						$field_settings['link'] = 'https://ctrlweb.ca/fr/';
-					}
+						// $name$
+						if ( strpos( $text, '$name$' ) !== false ) {
+							$text = str_replace( '$name$', $recipient->user_nicename, $text );
+						}
 
-					self::generate_pdf_text( $pdf, $field_settings, $text );
+						// $portfolio$
+						if ( strpos( $text, '$portfolio$' ) !== false ) {
+							$text                   = str_replace( '$portfolio$', 'TODO', $text );
+							$field_settings['link'] = 'https://ctrlweb.ca/fr/';
+						}
+
+						self::generate_pdf_text( $pdf, $field_settings, $text );
+					}
 				}
 			}
+			status_header( 200 );
+			$pdf->Output();
+			die;
+		} else {
+			echo 'BadgeFactor 2 settings missing!';
 		}
-		status_header( 200 );
-		$pdf->Output();
-		die;
 	}
 
 
 	public static function certificate_link() {
-		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
+		$settings      = get_option( 'bf2_certificates_settings' );
+		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
-		$certificate_slug = self::get_certificate_slug();
+		if ( $template_file ) {
+			$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
 
-		echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View certificate', $plugin_data['TextDomain'] ) );
+			$certificate_slug = self::get_certificate_slug();
+
+			echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View certificate', $plugin_data['TextDomain'] ) );
+		} else {
+			if ( current_user_can( 'manage_badgr' ) ) {
+				echo sprintf('<a href="%s">%s</a>', admin_url().'admin.php?page=bf2_certificates_settings', __('Missing Certificate Template in settings!', $plugin_data['TextDomain']) );
+			}
+		}
 	}
 
 
