@@ -185,7 +185,7 @@ class Certificates_Public {
 			echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View certificate', $plugin_data['TextDomain'] ) );
 		} else {
 			if ( current_user_can( 'manage_badgr' ) ) {
-				echo sprintf('<a href="%s">%s</a>', admin_url().'admin.php?page=bf2_certificates_settings', __('Missing Certificate Template in settings!', $plugin_data['TextDomain']) );
+				echo sprintf( '<a href="%s">%s</a>', admin_url() . 'admin.php?page=bf2_certificates_settings', __( 'Missing Certificate Template in settings!', $plugin_data['TextDomain'] ) );
 			}
 		}
 	}
