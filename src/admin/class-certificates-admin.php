@@ -85,6 +85,7 @@ class Certificates_Admin {
 		$legend .= sprintf( '<tr><td style="padding:0"><strong>$issuer$</strong></td><td style="padding:0">%s</td></tr>', __( 'Badge issuer name with link', $plugin_data['TextDomain'] ) );
 		$legend .= sprintf( '<tr><td style="padding:0"><strong>$name$</strong></td><td style="padding:0">%s</td></tr>', __( 'Recipient name', $plugin_data['TextDomain'] ) );
 		$legend .= sprintf( '<tr><td style="padding:0"><strong>$portfolio$</strong></td><td style="padding:0">%s</td></tr>', __( 'Recipient badge portfolio link', $plugin_data['TextDomain'] ) );
+		$legend .= sprintf( '<tr><td style="padding:0; padding-top: 1em;"><a target="_blank" href="%s">%s</a></td></tr>', '?page=bf2_certificates_settings&preview=1', __( 'Preview', $plugin_data['TextDomain'] ) );
 		$legend .= '</tbody>';
 		$legend .= '</table>';
 		$legend .= '</div>';
@@ -238,7 +239,8 @@ class Certificates_Admin {
 	 * @return void
 	 */
 	private static function generate_preview() {
-		$entity_id = $_GET['assertion_id'];
+		$assertion = Assertion::random();
+		$entity_id = $assertion->entityId;
 		$assertion = Assertion::get( $entity_id );
 		$badge     = BadgeClass::get( $assertion->badgeclass );
 		$badgepage = BadgePage::get_by_badgeclass_id( $badge->entityId );

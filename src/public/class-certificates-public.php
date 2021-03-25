@@ -96,9 +96,10 @@ class Certificates_Public {
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
 		if ( $template_file ) {
-			$badge     = BadgeClass::get( $assertion->badgeclass );
-			$issuer    = Issuer::get( $badge->issuer );
-			$recipient = get_user_by( 'email', $assertion->recipient->plaintextIdentity );
+			$badge          = BadgeClass::get( $assertion->badgeclass );
+			$issuer         = Issuer::get( $badge->issuer );
+			$recipient      = get_user_by( 'email', $assertion->recipient->plaintextIdentity );
+			$portfolio_link = bp_core_get_user_domain( $recipient->ID );
 
 			$pdf = new Fpdi();
 			$pdf->AddPage( 'L', 'Letter' );
@@ -156,8 +157,8 @@ class Certificates_Public {
 
 						// $portfolio$
 						if ( strpos( $text, '$portfolio$' ) !== false ) {
-							$text                   = str_replace( '$portfolio$', 'TODO', $text );
-							$field_settings['link'] = 'https://ctrlweb.ca/fr/';
+							$text                   = str_replace( '$portfolio$', $portfolio_link, $text );
+							$field_settings['link'] = $portfolio_link;
 						}
 
 						self::generate_pdf_text( $pdf, $field_settings, $text );
