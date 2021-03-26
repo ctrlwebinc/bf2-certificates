@@ -122,13 +122,13 @@ class Certificates_Public {
 						$text = $field_settings['text'];
 
 						// $course$
-						if ( strpos( $text, '$course$' ) !== false ) {
+						if ( $course && strpos( $text, '$course$' ) !== false ) {
 							$text = str_replace( '$course$', $course->post_title, $text );
 						}
 
 						// $date$
 						if ( strpos( $text, '$date$' ) !== false ) {
-							$text = str_replace( '$date$', date_i18n( 'Y-m-d' ), $text );
+							$text = str_replace( '$date$', date( 'Y-m-d', strtotime( $assertion->issuedOn ) ), $text );
 						}
 
 						// $hours$
