@@ -152,7 +152,7 @@ class Certificates_Public {
 
 						// $name$
 						if ( strpos( $text, '$name$' ) !== false ) {
-							$text = str_replace( '$name$', $recipient->user_nicename, $text );
+							$text = str_replace( '$name$', $recipient->display_name, $text );
 						}
 
 						// $portfolio$
