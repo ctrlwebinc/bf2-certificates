@@ -124,6 +124,9 @@ class Certificates_Public {
 						// $course$
 						if ( $course && strpos( $text, '$course$' ) !== false ) {
 							$text = str_replace( '$course$', $course->post_title, $text );
+						} else {
+							// If no course associated to badge, use badge name instead.
+							$text = str_replace( '$course$', $badge->name, $text );
 						}
 
 						// $date$
