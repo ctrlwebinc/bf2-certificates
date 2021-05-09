@@ -136,7 +136,7 @@ class Certificates_Public {
 
 						// $hours$
 						if ( strpos( $text, '$hours$' ) !== false ) {
-							$hours = get_post_meta( $course, 'course_duration', true );
+							$hours = get_post_meta( $course->ID, 'course_duration', true );
 							if ( false === $hours ) {
 								$hours = 'N/A';
 							}
