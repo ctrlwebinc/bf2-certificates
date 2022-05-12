@@ -229,18 +229,25 @@ class Certificates_Public {
 	 * @return void
 	 */
 	private static function generate_pdf_text( Fpdi $pdf, array $field_settings, $content ) {
-		$pdf->SetXY( $field_settings['pos_x'], $field_settings['pos_y'] );
+		// $pdf->SetXY( $field_settings['pos_x'], $field_settings['pos_y'] );
 		$pdf->setFont( $field_settings['font'], $field_settings['style'] );
 		$pdf->setFontSize( $field_settings['size'] );
-		$pdf->Cell(
+		
+		$pdf->MultiCell(
 			$field_settings['width'], // Width.
 			0, // Height.
 			$content, // Text.
-			0, // Border.
-			0, // Position after.
+			1, // Border.
 			$field_settings['align'], // Align.
-			false, // Fill.
-			$field_settings['link'] // Link.
+			0,
+			1,
+			$field_settings['pos_x'], 
+			$field_settings['pos_y'],
+			true, 
+			0, 
+			false, 
+			true, 
+			0
 		);
 	}
 }
