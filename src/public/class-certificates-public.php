@@ -229,9 +229,21 @@ class Certificates_Public {
 	 * @return void
 	 */
 	private static function generate_pdf_text( Fpdi $pdf, array $field_settings, $content ) {
+		$arr_rgb = [0, 0, 0];
 		// $pdf->SetXY( $field_settings['pos_x'], $field_settings['pos_y'] );
 		$pdf->setFont( $field_settings['font'], $field_settings['style'] );
 		$pdf->setFontSize( $field_settings['size'] );
+		
+		if ( trim( $field_settings['color'] ) != '' ) {
+			list( $r, $g, $b ) = array_map(
+				function ( $c ) {
+					return hexdec( str_pad( $c, 2, $c ) );
+				},
+				str_split( ltrim( $field_settings['color'], '#' ), strlen( $field_settings['color'] ) > 4 ? 2 : 1 )
+			);
+			$arr_rgb = [$r, $g, $b];
+		}
+		$pdf->SetTextColor( $arr_rgb[0], $arr_rgb[1], $arr_rgb[2] );
 		
 		$pdf->MultiCell(
 			$field_settings['width'], // Width.

@@ -77,6 +77,7 @@ class PDF_Field {
 				'pos_x' => '',
 				'pos_y' => '',
 				'align' => '',
+				'color' => '',
 			)
 		);
 
@@ -149,6 +150,17 @@ class PDF_Field {
 				'value'    => $field_escaped_value['size'],
 				'required' => 'required',
 			)
+		);
+		echo '</div>';
+		echo '<div class="alignleft">';
+		echo sprintf( '<p><label for="%s">%s</label></p>', $field_type_object->_id( '_color' ), __( 'Couleur', $plugin_data['TextDomain'] ) );
+		echo $field_type_object->colorpicker(
+			array(
+				'name'     => $field_type_object->_name( '[color]' ),
+				'id'       => $field_type_object->_id( '_color' ),
+				'value'    => $field_escaped_value['color'],
+			),
+			"#000000"
 		);
 		echo '</div>';
 		echo '</div>';
