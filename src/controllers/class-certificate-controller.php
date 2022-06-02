@@ -57,9 +57,11 @@ class Certificate_Controller extends Page_Controller {
 
 			foreach ( $assertions as $a ) {
 				$badgepage = BadgePage::get_by_badgeclass_id( $a->badgeclass );
-				if ( get_query_var( 'badge' ) === $badgepage->post_name ) {
-					Certificates_Public::generate( $course, $a );
-					die;
+				if ( false !== $badgepage ) {
+					if ( get_query_var( 'badge' ) === $badgepage->post_name ) {
+						Certificates_Public::generate( $course, $a );
+						die;
+					}
 				}
 			}
 		}
