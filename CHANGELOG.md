@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 1.2.1
+
+Added: a check on $badgepage in Certificate_Controller::single()
+
 ## 1.2.0
 
 - Added: CHANGELOG
