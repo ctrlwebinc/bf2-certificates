@@ -234,7 +234,7 @@ class Certificates_Public {
 		$pdf->setFont( $field_settings['font'], $field_settings['style'] );
 		$pdf->setFontSize( $field_settings['size'] );
 		
-		if ( trim( $field_settings['color'] ) != '' ) {
+		if ( isset( $field_settings['color'] ) && trim( $field_settings['color'] ) != '' ) {
 			list( $r, $g, $b ) = array_map(
 				function ( $c ) {
 					return hexdec( str_pad( $c, 2, $c ) );
