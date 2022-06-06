@@ -2,9 +2,13 @@
 
 ## [Unreleased]
 
+## 1.2.2
+
+- Fixed: added a check if $field_settings['color'] is set in Certificates_Public::generate_pdf_text()
+
 ## 1.2.1
 
-Added: a check on $badgepage in Certificate_Controller::single()
+- Fixed: added a check on $badgepage in Certificate_Controller::single()
 
 ## 1.2.0
 
