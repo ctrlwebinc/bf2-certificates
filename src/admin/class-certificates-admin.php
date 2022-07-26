@@ -55,20 +55,12 @@ class Certificates_Admin {
 		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
 
 		$args = array(
-			'id'           => 'bf2_certificates_settings_page',
-			'menu_title'   => __( 'Certificates', $plugin_data['TextDomain'] ),
+			'id'           => 'bf2_diplomas_settings_page',
+			'menu_title'   => __( 'Diplomas', $plugin_data['TextDomain'] ),
 			'object_types' => array( 'options-page' ),
-			'option_key'   => 'bf2_certificates_settings',
-			'parent_slug'  => 'badgefactor2',
-			'tab_group'    => 'badgefactor2',
-			'tab_title'    => __( 'Certificates', $plugin_data['TextDomain'] ),
+			'option_key'   => 'bf2_diplomas_settings',
 			'capability'   => 'manage_badgr',
 		);
-
-		// 'tab_group' property is supported in > 2.4.0.
-		if ( version_compare( CMB2_VERSION, '2.4.0' ) ) {
-			$args['display_cb'] = 'badgefactor2_options_display_with_tabs';
-		}
 
 		$plugins = new_cmb2_box( $args );
 
@@ -101,7 +93,7 @@ class Certificates_Admin {
 
 		$plugins->add_field(
 			array(
-				'name'    => __( 'Certificate slug', BF2_DATA['TextDomain'] ),
+				'name'    => __( 'Diplomas slug', BF2_DATA['TextDomain'] ),
 				'desc'    => __( 'When you modify this, you need to flush your rewrite rules.', BF2_DATA['TextDomain'] ),
 				'id'      => 'bf2_certificate_slug',
 				'type'    => 'text',
@@ -111,7 +103,7 @@ class Certificates_Admin {
 
 		$plugins->add_field(
 			array(
-				'name'         => __( 'Certificate Template', $plugin_data['TextDomain'] ),
+				'name'         => __( 'Diploma Template', $plugin_data['TextDomain'] ),
 				'type'         => 'file',
 				'id'           => 'bf2_certificate_template',
 				'options'      => array(
@@ -129,7 +121,7 @@ class Certificates_Admin {
 
 		$plugins->add_field(
 			array(
-				'name' => __( 'Certificate Title', $plugin_data['TextDomain'] ),
+				'name' => __( 'Diploma Title', $plugin_data['TextDomain'] ),
 				'id'   => 'bf2_certificate_title',
 				'type' => 'pdf_field',
 			)
@@ -137,7 +129,7 @@ class Certificates_Admin {
 
 		$plugins->add_field(
 			array(
-				'name' => __( 'Certificate Subtitle', $plugin_data['TextDomain'] ),
+				'name' => __( 'Diploma Subtitle', $plugin_data['TextDomain'] ),
 				'id'   => 'bf2_certificate_subtitle',
 				'type' => 'pdf_field',
 			)
