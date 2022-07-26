@@ -62,7 +62,7 @@ class Certificates_Admin {
 			'option_key'   => 'bf2_diplomas_settings',
 			'capability'   => 'manage_badgr',
 			'position' => 20,
-			'icon_url' => BF2_BASEURL . ( 'assets/images/diploma_menu_icon.png' ),
+			'icon_url' => BF2_CERTIFICATES_BASEURL . ( 'assets/images/diploma_menu_icon.png' ),
 		);
 
 		$plugins = new_cmb2_box( $args );

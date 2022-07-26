@@ -44,6 +44,16 @@ if ( ! defined( 'BF2_CERTIFICATES_FILE' ) ) {
 	define( 'BF2_CERTIFICATES_FILE', __FILE__ );
 }
 
+// Define BF2_CERTIFICATES_ABSPATH.
+if ( ! defined( 'BF2_CERTIFICATES_ABSPATH' ) ) {
+	define( 'BF2_CERTIFICATES_ABSPATH', dirname( BF2_CERTIFICATES_FILE ) );
+}
+
+// Define BF2_CERTIFICATES_BASEURL.
+if ( ! defined( 'BF2_CERTIFICATES_BASEURL' ) ) {
+	define( 'BF2_CERTIFICATES_BASEURL', plugin_dir_url( BF2_CERTIFICATES_FILE ) );
+}
+
 // Deactivate if BadgeFactor2 is not active.
 if ( ! class_exists( 'BadgeFactor2\BadgeFactor2' ) || ! \BadgeFactor2\BadgeFactor2::is_initialized() ) {
 	deactivate_plugins( plugin_dir_path( __FILE__ ) . '/bf2-certificates.php' );
