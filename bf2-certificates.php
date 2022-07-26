@@ -1,6 +1,6 @@
 <?php
 /**
- * Badge Factor 2 - Certificates Addon
+ * Badge Factor 2 - Diplomas Addon
  * Copyright (C) 2021 ctrlweb
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  *
  * @package Badge_Factor_2_Certificates
  *
- * Plugin Name: Badge Factor 2 - Certificates Addon
+ * Plugin Name: Badge Factor 2 - Diplomas Addon
  * Plugin URI: https://github.com/ctrlwebinc/bf2-certificates
  * GitHub Plugin URI: https://github.com/ctrlwebinc/bf2-certificates
- * Description: Adds Certificates to Badge Factor 2.
+ * Description: Adds Diplomas to Badge Factor 2.
  * Author: ctrlweb
  * Version: 1.0.0
  * Author URI: https://badgefactor2.com/
