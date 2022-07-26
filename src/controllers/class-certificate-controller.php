@@ -50,7 +50,7 @@ class Certificate_Controller extends Page_Controller {
 	 * @return void
 	 */
 	public static function single( $default_template = null ) {
-		if ( get_query_var( 'member' ) && get_query_var( 'badge' ) && get_query_var( 'certificate' ) ) {
+		if ( get_query_var( 'member' ) && get_query_var( 'badge' ) && get_query_var( 'diploma' ) ) {
 			$user       = get_user_by( 'slug', get_query_var( 'member' ) );
 			$course     = Course::get_by_badge_slug( get_query_var( 'badge' ) );
 			$assertions = Assertion::all_for_user( $user );

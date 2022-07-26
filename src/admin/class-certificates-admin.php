@@ -57,6 +57,7 @@ class Certificates_Admin {
 		$args = array(
 			'id'           => 'bf2_diplomas_settings_page',
 			'menu_title'   => __( 'Diplomas', $plugin_data['TextDomain'] ),
+			'page_title'   => __( 'Diplomas', $plugin_data['TextDomain'] ),
 			'object_types' => array( 'options-page' ),
 			'option_key'   => 'bf2_diplomas_settings',
 			'capability'   => 'manage_badgr',

@@ -56,13 +56,13 @@ class Certificates_Public {
 	 * @return void
 	 */
 	public static function add_rewrite_tags() {
-		add_rewrite_tag( '%certificate%', '([^&]+)' );
+		add_rewrite_tag( '%diploma%', '([^&]+)' );
 	}
 
 
 	public static function get_certificate_slug() {
-		$options = get_option( 'bf2_certificates_settings' );
-		return ! empty( $options['bf2_certificate_slug'] ) ? $options['bf2_certificate_slug'] : 'certificate';
+		$options = get_option( 'bf2_diplomas_settings' );
+		return ! empty( $options['bf2_certificate_slug'] ) ? $options['bf2_certificate_slug'] : 'diplome';
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Certificates_Public {
 			// FIXME make certificate variable.
 			$certificate_slug = self::get_certificate_slug();
 
-			add_rewrite_rule( "{$members_page}/([^/]+)/badges/([^/]+)/{$certificate_slug}/?$", 'index.php?member=$matches[1]&badge=$matches[2]&certificate=1', 'top' );
+			add_rewrite_rule( "{$members_page}/([^/]+)/badges/([^/]+)/{$certificate_slug}/?$", 'index.php?member=$matches[1]&badge=$matches[2]&diploma=1', 'top' );
 		} else {
 			// TODO Manage Members page without BuddyPress.
 		}
@@ -91,7 +91,7 @@ class Certificates_Public {
 	public static function generate( $course, $assertion ) {
 
 		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
-		$settings    = get_option( 'bf2_certificates_settings' );
+		$settings    = get_option( 'bf2_diplomas_settings' );
 
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
@@ -178,7 +178,7 @@ class Certificates_Public {
 
 
 	public static function certificate_link() {
-		$settings      = get_option( 'bf2_certificates_settings' );
+		$settings      = get_option( 'bf2_diplomas_settings' );
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
 		if ( $template_file ) {
@@ -186,10 +186,10 @@ class Certificates_Public {
 
 			$certificate_slug = self::get_certificate_slug();
 
-			echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View certificate', $plugin_data['TextDomain'] ) );
+			echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View diploma', $plugin_data['TextDomain'] ) );
 		} else {
 			if ( current_user_can( 'manage_badgr' ) ) {
-				echo sprintf( '<a href="%s">%s</a>', admin_url() . 'admin.php?page=bf2_certificates_settings', __( 'Missing Certificate Template in settings!', $plugin_data['TextDomain'] ) );
+				echo sprintf( '<a href="%s">%s</a>', admin_url() . 'admin.php?page=bf2_diplomas_settings', __( 'Missing Diploma Template in settings!', $plugin_data['TextDomain'] ) );
 			}
 		}
 	}
