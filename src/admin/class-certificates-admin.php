@@ -61,7 +61,7 @@ class Certificates_Admin {
 			'object_types' => array( 'options-page' ),
 			'option_key'   => 'bf2_diplomas_settings',
 			'capability'   => 'manage_badgr',
-			// 'position' => 1,
+			'position' => 20,
 			'icon_url' => BF2_BASEURL . ( 'assets/images/diploma_menu_icon.png' ),
 		);
 
