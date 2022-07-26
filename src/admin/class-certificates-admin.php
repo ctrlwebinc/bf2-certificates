@@ -87,7 +87,7 @@ class Certificates_Admin {
 
 		$plugins->add_field(
 			array(
-				'name' => 'Available variables',
+				'name' => __( 'Available variables', $plugin_data['TextDomain'] ),
 				'desc' => $legend,
 				'type' => 'title',
 				'id'   => 'bf2_certificate_instructions',
