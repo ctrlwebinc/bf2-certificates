@@ -59,7 +59,7 @@ class Certificates_Admin {
 			'menu_title'   => __( 'Diplomas', $plugin_data['TextDomain'] ),
 			'title'   => __( 'Diplomas', $plugin_data['TextDomain'] ),
 			'object_types' => array( 'options-page' ),
-			'option_key'   => 'bf2_diplomas_settings',
+			'option_key'   => 'bf2_certificates_settings',
 			'capability'   => 'manage_badgr',
 			'position' => 20,
 			'icon_url' => BF2_CERTIFICATES_BASEURL . ( 'assets/images/diploma_menu_icon.png' ),

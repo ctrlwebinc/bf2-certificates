@@ -61,7 +61,7 @@ class Certificates_Public {
 
 
 	public static function get_certificate_slug() {
-		$options = get_option( 'bf2_diplomas_settings' );
+		$options = get_option( 'bf2_certificate_settings' );
 		return ! empty( $options['bf2_certificate_slug'] ) ? $options['bf2_certificate_slug'] : 'diplome';
 	}
 
@@ -91,7 +91,7 @@ class Certificates_Public {
 	public static function generate( $course, $assertion ) {
 
 		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
-		$settings    = get_option( 'bf2_diplomas_settings' );
+		$settings    = get_option( 'bf2_certificates_settings' );
 
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
@@ -178,7 +178,7 @@ class Certificates_Public {
 
 
 	public static function certificate_link() {
-		$settings      = get_option( 'bf2_diplomas_settings' );
+		$settings      = get_option( 'bf2_certificates_settings' );
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
 
 		if ( $template_file ) {
