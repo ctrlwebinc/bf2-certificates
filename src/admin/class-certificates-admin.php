@@ -46,6 +46,7 @@ class Certificates_Admin {
 		add_action( 'admin_init', array( self::class, 'manage_pdf_preview' ), 10 );
 		add_action( 'cmb2_save_field_bf2_certificate_slug', array( self::class, 'save_certificate_slug' ), 99, 3 );
 		add_action( 'init', array( self::class, 'flush_certificate_slug' ), 10 );
+		add_action( 'init', array( self::class, 'add_custom_role_and_capabilities' ), 11 );
 	}
 
 	/**
@@ -60,7 +61,7 @@ class Certificates_Admin {
 			'title'   => __( 'Diplomas', $plugin_data['TextDomain'] ),
 			'object_types' => array( 'options-page' ),
 			'option_key'   => 'bf2_certificates_settings',
-			'capability'   => 'manage_badgr',
+			'capability'   => 'manage_diplomas',
 			'position' => 20,
 			'icon_url' => BF2_CERTIFICATES_BASEURL . ( 'assets/images/diploma_menu_icon.png' ),
 		);
@@ -242,5 +243,26 @@ class Certificates_Admin {
 		$courses   = BadgePage::get_courses( $badgepage->ID );
 
 		Certificates_Public::generate( $courses[0], $assertion );
+	}
+
+	/**
+	 * Adds custom roles and capabilities for diploma manager
+	 *
+	 * @return void
+	 */
+	public static function add_custom_role_and_capabilities() {
+		$plugin_data = get_plugin_data( BF2_BASIC_CERTIFICATES_FILE );
+		
+		$diploma_manager = add_role(
+			'diploma-manager',
+			__( 'Diploma manager', $plugin_data['TextDomain'] ),
+			array(
+				'read' => true,
+				'manage_diplomas' => true,
+			)
+		);
+		
+		$administrator = get_role( 'administrator' );
+		$administrator->add_cap( 'manage_diplomas', true );
 	}
 }
