@@ -221,6 +221,7 @@ class Certificates_Admin {
 		global $pagenow;
 		if ( 'admin.php' === $pagenow &&
 			'bf2_certificates_settings' === $_GET['page'] &&
+			isset( $_GET['preview'] ) && 
 			'1' === $_GET['preview']
 			) {
 				self::generate_preview();
