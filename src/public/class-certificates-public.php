@@ -78,7 +78,7 @@ class Certificates_Public {
 			// FIXME make certificate variable.
 			$certificate_slug = self::get_certificate_slug();
 
-			add_rewrite_rule( "{$members_page}/([^/]+)/badges/([^/]+)/{$certificate_slug}/?$", 'index.php?member=$matches[1]&badge=$matches[2]&diploma=1', 'top' );
+			add_rewrite_rule( "{$certificate_slug}/([^/]+)/([^/]+)/?$", 'index.php?member=$matches[1]&badge=$matches[2]&diploma=1', 'top' );
 		} else {
 			// TODO Manage Members page without BuddyPress.
 		}
@@ -180,13 +180,24 @@ class Certificates_Public {
 	public static function certificate_link() {
 		$settings      = get_option( 'bf2_certificates_settings' );
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
+		$current_user = wp_get_current_user();
 
 		if ( $template_file ) {
-			$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
+			if ( $current_user->ID > 0 && get_query_var( 'badge' ) != '' ) {
+				$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
 
-			$certificate_slug = self::get_certificate_slug();
-
-			echo sprintf( '<a target="_blank" href="%s">%s</a>', $certificate_slug, __( 'View diploma', $plugin_data['TextDomain'] ) );
+				$home = get_bloginfo( 'url' );
+				$certificate_slug = self::get_certificate_slug();
+				$username = $current_user->user_login;
+				$badge = get_query_var( 'badge' );
+				echo sprintf( 
+					'<a target="_blank" href="%s/%s/%s/%s/">%s</a>', 
+					$home,
+					$certificate_slug,$username,
+					$badge,
+					__( 'Download the diploma', $plugin_data['TextDomain'] )
+				);
+			}
 		} else {
 			if ( current_user_can( 'manage_badgr' ) ) {
 				echo sprintf( '<a href="%s">%s</a>', admin_url() . 'admin.php?page=bf2_diplomas_settings', __( 'Missing Diploma Template in settings!', $plugin_data['TextDomain'] ) );
