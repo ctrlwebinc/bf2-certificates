@@ -99,6 +99,7 @@ class BF2_Certificates {
 		require_once plugin_dir_path( __FILE__ ) . 'controllers/class-certificate-controller.php';
 		require_once plugin_dir_path( __FILE__ ) . 'public/class-certificates-public.php';
 		require_once plugin_dir_path( __FILE__ ) . 'post-types/class-course-certificate-extension.php';
+		require_once plugin_dir_path( __FILE__ ) . 'helpers/class-certificate-helper.php';
 
 		// Admin / CLI classes.
 		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {

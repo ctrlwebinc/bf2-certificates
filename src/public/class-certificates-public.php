@@ -30,6 +30,8 @@ use BadgeFactor2\Helpers\BuddyPress;
 use BadgeFactor2\Models\BadgeClass;
 use BadgeFactor2\Models\Issuer;
 use setasign\Fpdi\Tcpdf\Fpdi;
+use BadgeFactor2\Post_Types\BadgePage;
+use BadgeFactor2\Helpers\CerficateHelper;
 
 class Certificates_Public {
 
@@ -88,15 +90,17 @@ class Certificates_Public {
 	/**
 	 * Generate certificate.
 	 */
-	public static function generate( $course, $assertion ) {
+	public static function generate( $course, $assertion, $save = false ) {
 
 		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
 		$settings    = get_option( 'bf2_certificates_settings' );
 
 		$template_file = get_attached_file( $settings['bf2_certificate_template_id'] );
+		$storage_root = WP_CONTENT_DIR . '/attachments/';
 
 		if ( $template_file ) {
 			$badge          = BadgeClass::get( $assertion->badgeclass );
+			$badgepage      = BadgePage::get_by_badgeclass_id( $assertion->badgeclass );
 			$issuer         = Issuer::get( $badge->issuer );
 			$recipient      = get_user_by( 'email', $assertion->recipient->plaintextIdentity );
 			$portfolio_link = bp_core_get_user_domain( $recipient->ID );
@@ -168,9 +172,20 @@ class Certificates_Public {
 					}
 				}
 			}
-			status_header( 200 );
-			$pdf->Output();
-			die;
+			if ( $save ) {
+				$filename = CerficateHelper::generate_filename( $recipient, $badgepage );
+				$filename = $storage_root . $filename;
+				
+				if ( ! file_exists( $filename ) ) {
+					$pdf->Output($filename,'F');
+				}
+				
+				return $filename;
+			} else {
+				status_header( 200 );
+				$pdf->Output();
+				die;
+			}
 		} else {
 			echo 'BadgeFactor 2 settings missing!';
 		}
