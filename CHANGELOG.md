@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## 1.3.0
+- Refactorisation: Suppression des commandes à 0$ pour les clients institutionnels. Amélioration des performances.
+
 ## 1.2.2
 
 - Fixed: added a check if $field_settings['color'] is set in Certificates_Public::generate_pdf_text()
