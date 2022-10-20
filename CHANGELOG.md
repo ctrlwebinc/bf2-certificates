@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ## 1.3.0
-- Refactorisation: Suppression des commandes à 0$ pour les clients institutionnels. Amélioration des performances.
+- Refactored: fixed performance issues.
 
 ## 1.2.2
 
