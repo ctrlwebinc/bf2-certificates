@@ -155,7 +155,8 @@ class Certificates_Public {
 
 						// $name$
 						if ( strpos( $text, '$name$' ) !== false ) {
-							$text = str_replace( '$name$', html_entity_decode($recipient->display_name, ENT_QUOTES, 'UTF-8'), $text );
+                            $str = str_replace('É','E',$recipient->display_name);
+							$text = str_replace( '$name$', $str, $text );
 						}
 
 						// $portfolio$
