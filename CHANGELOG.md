@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 1.3.1
+
+- Fixed: workaround for issue with accented character in PDF generation.
+
 ## 1.3.0
 - Refactored: fixed performance issues.
 
