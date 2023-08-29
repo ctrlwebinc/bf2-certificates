@@ -88,7 +88,7 @@ class Certificates_Public {
 	/**
 	 * Generate certificate.
 	 */
-	public static function generate( $course, $assertion ) {
+	public static function generate( $course, $assertion, $badgepage = null ) {
 
 		$plugin_data = get_plugin_data( BF2_CERTIFICATES_FILE );
 		$settings    = get_option( 'bf2_certificates_settings' );
@@ -137,6 +137,9 @@ class Certificates_Public {
 						// $hours$
 						if ( strpos( $text, '$hours$' ) !== false ) {
 							$hours = get_post_meta( $course->ID, 'course_duration', true );
+							if ( false === $hours  && null != $badgepage) {
+								$hours = get_post_meta( $badgepage->ID, 'required_time_hours', true );
+							}
 							if ( false === $hours ) {
 								$hours = 'N/A';
 							}
