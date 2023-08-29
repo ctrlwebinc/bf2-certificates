@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+# 1.4.0
+
+- Added: alternatively get hours from badge page if no course or no course hours
+
 ## 1.3.2
 
 - Security update.
